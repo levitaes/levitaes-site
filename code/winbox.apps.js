@@ -105,9 +105,9 @@ function musicApp () {
         x: "center",
         y: "center",
         width: "400px",
-        height: "300px",
+        height: "440px",
         minwidth: "400px",
-        minheight: "300px",
+        minheight: "440px",
         url: "apps/music.app.html",
     });
 }

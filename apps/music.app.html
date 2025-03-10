@@ -12,44 +12,16 @@
         a:hover {color: black}
     </style>
     <style>
-        .player {
-            height: 95vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .details {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            margin-top: 25px;
-        }
-
-        .track-art {
-        }
-
-        .now-playing {
-        }
-
         .track-name {
             font-size: 1.4rem;
         }
 
-        .track-artist {
-            text-align: left;
-        }
 
         .buttons {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
-        }
-
-        .media-controls {
-            
         }
 
         .fa {
@@ -141,10 +113,17 @@
     <body class="content bg-light">
         <div class="player">
             <div class="details">
-                <div class="now-playing">x of y</div>
-                <div class="track-art"></div>
-                <div class="track-name">Track Name</div>
-                <div class="track-artist">Track Artist</div>
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <div class="now-playing">x of y</div>
+                        <div class="track-art"></div>
+                        <div class="track-name">Track Name</div>
+                        <div class="track-artist">Track Artist</div>
+                    </div>
+                    <div class="text-center">
+                        <img id="myCD" width="100px" class="mt-4" src="../assets/cd1.png">
+                    </div>
+                </div>
             </div>
             <div class="media-controls">
                 <div class="slider_container">
@@ -274,6 +253,8 @@
 
                 // Replace icon with the pause icon
                 playpause_btn.innerHTML = '<img width="50px" src="../assets/pause.png">';
+
+                turnOn();
             }
 
             function pauseTrack() {
@@ -281,7 +262,9 @@
                 isPlaying = false;
 
                 // Replace icon with the play icon
-                playpause_btn.innerHTML = '<img width="50px" src="../assets/play.png">';;
+                playpause_btn.innerHTML = '<img width="50px" src="../assets/play.png">';
+
+                turnOff();
             }
 
             function nextTrack() {
@@ -289,6 +272,8 @@
                     track_index += 1;
                 else track_index = 0;
                 loadTrack(track_index);
+                turnOff();
+                resetCD();
                 playTrack();
             }
 
@@ -297,6 +282,8 @@
                     track_index -= 1;
                 else track_index = track_list.length;
                 loadTrack(track_index);
+                turnOff();
+                resetCD();
                 playTrack();
             }
 
@@ -336,6 +323,28 @@
 
             // Load the first track in the tracklist
             loadTrack(track_index);
+        </script>
+        <script>
+            let timer;
+            let turn = 0;
+            function turnOn() {
+                timer = setInterval(turnCD, 20);   
+            }
+
+            function turnOff() {
+                clearInterval(timer);
+            }
+
+            function turnCD() {
+                let x = document.getElementById("myCD");
+                turn += 10;
+                x.style.transform = "rotate("+ (turn % 360) +"deg)"
+            }
+
+            function resetCD() {
+                let x = document.getElementById("myCD");
+                x.style.transform = "rotate("+ (0) +"deg)"
+            }
         </script>
     </body>
 </html>

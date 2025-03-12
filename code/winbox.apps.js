@@ -8,7 +8,7 @@ function terminalApp () {
         height: "45%",
         minwidth: "400px",
         minheight: "300px",
-        url: "https://levitaes.net/terminal/",
+        url: "apps/terminal.app.html",
     });
 }
 

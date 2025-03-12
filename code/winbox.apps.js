@@ -8,7 +8,25 @@ function terminalApp () {
         height: "45%",
         minwidth: "400px",
         minheight: "300px",
-        url: "apps/terminal.app.html",
+        
+        oncreate: function(){
+            const div1 = document.createElement("div");
+            div1.style = "background-color: rgb(178, 198, 209); height: 100%; width: 100%;";
+            document.getElementById(this.id).querySelector('.wb-body').appendChild(div1);
+
+            const div2 = document.createElement("div");
+            div2.style = "background-color: rgb(250, 240, 230); position: absolute; top: 1%; left: 1%; height: 98%; width: 98%; border: 2px solid black; padding: 4px;";
+            div1.appendChild(div2);
+            
+            const div3 = document.createElement("div");
+            div3.style = "position: relative; width: 100%; height: 100%; overflow: hidden;";
+            div2.appendChild(div3);
+
+            const iframe = document.createElement("iframe");
+            iframe.src = "https://levitaes.net/terminal";
+            iframe.style = "height: 100%; width: 100%;"
+            div3.appendChild(iframe);
+        },
     });
 }
 

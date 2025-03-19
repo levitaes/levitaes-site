@@ -8,7 +8,7 @@ function terminalApp () {
         height: "45%",
         minwidth: "400px",
         minheight: "300px",
-        
+        // url: "https://stieler.dev/"
         oncreate: function(){
             const div1 = document.createElement("div");
             div1.style = "background-color: rgb(178, 198, 209); height: 100%; width: 100%;";
@@ -23,7 +23,7 @@ function terminalApp () {
             div2.appendChild(div3);
 
             const iframe = document.createElement("iframe");
-            iframe.src = "https://levitaes.net/terminal/";
+            iframe.src = "https://stieler.dev/";
             iframe.style = "height: 100%; width: 100%;"
             div3.appendChild(iframe);
         },

@@ -66,20 +66,38 @@
             <div class="row">
                 <div class="col">
                     <ul id="unorderedList" class="list-group list-group-flush border border-dark border-2 rounded-0 rounded-bottom mt-1 p-0 bg-primary mb-3" style="min-height: 5px;">
-                        <li class="list-group-item list-group-item-action bg-secondary">Smile :)</li>
                     </ul>
                 </div>
             </div>
         </div>
 
         <script>
+
+
             textInput.addEventListener("keypress", function(event) {  
                 if (event.key === "Enter") {
                     newElement();
-
+                    window.location.reload();
                 }
             });
             var nodeList = document.getElementsByTagName("LI");
+            if (localStorage.getItem("todoStr") === null) {
+                localStorage.setItem("todoStr", JSON.stringify(["smile","suicide"]));
+                newElementFromStorage("Smile");
+            }
+            else {
+                pullEntries();
+            }
+
+            function pullEntries () {
+                let arr = JSON.parse(localStorage.getItem("todoStr"));
+                console.log(arr.length);
+                for (i = 0; i < arr.length; i++) {
+                    console.log(arr[i]);
+                    newElementFromStorage(arr[i]);
+                }
+            }
+
             var i;
             for(i = 0; i < nodeList.length; i++) {
                 var span = document.createElement("SPAN");
@@ -94,6 +112,7 @@
                 close[i].onclick = function() {
                     var div = this.parentElement;
                     div.style.display = "none";
+                    console.log(div.innerHTML);
                 }
             }
 
@@ -105,17 +124,44 @@
             }, false);
 
             function newElement() {
-                var li = document.createElement("li");
-                li.classList.add("list-group-item", "list-group-item-action", "bg-secondary");
+                // var li = document.createElement("li");
+                // li.classList.add("list-group-item", "list-group-item-action", "bg-secondary");
                 var inputValue = document.getElementById("textInput").value;
-                var t = document.createTextNode(inputValue);
-                li.appendChild(t);
+                // var t = document.createTextNode(inputValue);
+                // li.appendChild(t);
                 if (inputValue === '') {
                     ;
                 } else {
-                    document.getElementById("unorderedList").appendChild(li);
+                    //document.getElementById("unorderedList").appendChild(li);
+                    console.log("test");    
+                    let arr = JSON.parse(localStorage.getItem("todoStr"));
+                    arr.push(inputValue);
+                    localStorage.setItem("todoStr", JSON.stringify(arr));
+                    pullEntries();
                 }
                 document.getElementById("textInput").value = "";
+
+                // var span = document.createElement("SPAN");
+                // var txt = document.createTextNode("\u00D7");
+                // span.className = "close";
+                // span.appendChild(txt);
+                // li.appendChild(span);
+
+                // for (i = 0; i < close.length; i++) {
+                //     close[i].onclick = function() {
+                //     var div = this.parentElement;
+                //     div.style.display = "none";
+                //     }
+                // }
+            }
+
+            function newElementFromStorage(value) {
+                var li = document.createElement("li");
+                li.classList.add("list-group-item", "list-group-item-action", "bg-secondary");
+                var t = document.createTextNode(value);
+                li.appendChild(t);
+                // li.setAttribute("id", t);
+                document.getElementById("unorderedList").appendChild(li);
 
                 var span = document.createElement("SPAN");
                 var txt = document.createTextNode("\u00D7");
@@ -123,12 +169,12 @@
                 span.appendChild(txt);
                 li.appendChild(span);
 
-                for (i = 0; i < close.length; i++) {
-                    close[i].onclick = function() {
-                    var div = this.parentElement;
-                    div.style.display = "none";
-                    }
-                }
+                // for (i = 0; i < close.length; i++) {
+                //     close[i].onclick = function() {
+                //     var div = this.parentElement;
+                //     div.style.display = "none";
+                //     }
+                // }
             }
         </script>
     </body>

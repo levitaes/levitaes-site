@@ -65,35 +65,6 @@
         </div>
     </div>
     <script>
-        fetch("csv/internet-entries.csv")
-          .then(response => response.text())
-          .then(text => {
-            const rows = text.split("\n").slice(1);
-            const list = document.getElementById("list");
-        
-            rows.forEach(row => {
-              if (!row.trim()) return;
-        
-              const [name, link, description] = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-        
-              const li = document.createElement("li");
-              li.className = "list-group-item list-group-item-action bg-secondary";
-        
-              li.innerHTML = `
-                <a target="_parent" href="${link}">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">${name}</h5>
-                  </div>
-                  <p class="mb-1">${description.replace(/^"|"$/g, "")}</p>
-                </a>
-              `;
-        
-              list.appendChild(li);
-            });
-          });
-    </script>
-
-    <script>
         function refresh() {
             let input, filter, ul, li, a, i, txtValue;
             input = document.getElementById("search");

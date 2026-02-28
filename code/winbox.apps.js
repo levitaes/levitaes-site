@@ -23,7 +23,7 @@ function terminalApp () {
             div2.appendChild(div3);
 
             const iframe = document.createElement("iframe");
-            iframe.src = "https://stieler.dev/";
+            iframe.src = "https://cli.levitaes.net/";
             iframe.style = "height: 100%; width: 100%;"
             div3.appendChild(iframe);
         },

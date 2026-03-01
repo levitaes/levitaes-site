@@ -4,7 +4,7 @@
         <title>internet</title>
         <link href="../extensions/bootstrap.css" rel="stylesheet" >
         <meta charset="UTF-8">
-
+        <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
         <style>
             a {
             color: black;
@@ -81,5 +81,43 @@
                 }
             }
         }
+    </script>
+    <script>
+        fetch('../csv/internet-entries.csv')
+            .then(response => response.text())
+            .then(csvText => {
+                // Parse CSV with Papa Parse
+                const result = Papa.parse(csvText, {
+                header: true, // Use first row as headers (returns array of objects)
+                dynamicTyping: true, // Convert values to numbers/booleans automatically
+                skipEmptyLines: true // Ignore empty rows
+                });
+            
+                if (result.errors.length > 0) {
+                console.error('Parsing errors:', result.errors);
+                } else {
+                console.log('Parsed Data:', result.data);
+                // Output: [{ name: "Alice", age: 28, city: "New York" }, ...]
+                }
+
+                const list = document.getElementById("list");
+                list.innerHTML = "";
+
+                result.data.forEach(entry => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item list-group-item-action bg-secondary";
+
+                    li.innerHTML = `
+                        <a target="_parent" href="${entry.Link}">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">${entry.Name}</h5>
+                            </div>
+                            <p class="mb-1">${entry.Description}</p>
+                        </a>
+                    `;
+
+                    list.appendChild(li);
+                });
+            });
     </script>
 </body>

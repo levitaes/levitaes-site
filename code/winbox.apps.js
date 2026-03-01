@@ -75,15 +75,16 @@ function filesApp () {
 }
 
 function trashApp () {
-    new WinBox({
+    window.open('404/index.html', '_blank').focus();
+    /* new WinBox({
         title: "Trash",
         icon: "assets/trashbin.png",
         x: "center",
         y: "center",
         width: "550px",
         height: "500px",
-        url: "apps/trash.app.html",
-    });
+        //url: "apps/trash.app.html",
+    }); */
 }
 
 function todoApp () {

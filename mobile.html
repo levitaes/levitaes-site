@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>levitaes</title>
+        <link href="extensions/bootstrap.css" rel="stylesheet" >
+        <link rel="stylesheet" href="theme/winbox.styles.css">
+        <link rel="stylesheet" href="theme/styles.css">
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
+        <meta charset="UTF-8">
+    </head>
+    <body class="prevent-select prevent-scroll" onload="boot()" onresize="resized()" style="font-size: 25px; height: 100vh; background-image: url('assets/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
+        <div class="row border-bottom border-2 border-dark bg-secondary rounded-bottom mb-5 p-1">
+            <div class="col">Levi's Apps</div>
+            <div class="col text-end" id="livetime">0:00</div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col"></div>
+            </div>
+            <div class="row my-3">
+                <div class="col">
+                    <div onclick="window.open('apps/internet.app.html');" class="app">
+                    <img style="width: 100px" src="assets/internet.png" alt="Internet">
+                    <br><label>Internet</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div onclick="window.open('apps/files.app.html');" class="app">
+                        <img style="width: 100px" src="assets/folder.png" alt="Link-File">
+                        <br><label>Files</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div onclick="window.open('apps/terminal.app.html');" class="app">
+                        <img style="width: 100px" src="assets/desktop.png" alt="Terminal">
+                        <br><label>Terminal</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col">
+                    <div onclick="window.open('apps/music.app.html');" class="app">
+                    <img style="width: 100px" src="assets/music.png" alt="Music">
+                    <br><label>Music</label>
+                    </div>
+                </div>
+                <div class="col">
+                </div>
+                <div class="col">
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="extensions/winbox.bundle.min.js" async></script>
+    <script src="code/winbox.apps.js"></script>
+    <script src="code/desktop.logic.js"></script>
+    <script>
+        function resized() {
+            if (screen.width >= 700) {
+                document.location = "index.html";
+            }
+        }
+        function boot() {
+            resized();
+            getTime(); 
+        }
+    </script>
+</html>

@@ -8,7 +8,7 @@
         <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
         <meta charset="UTF-8">
     </head>
-    <body class="prevent-select prevent-scroll" onload="boot()" style="height: 100vh; background-image: url('assets/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <body class="prevent-select prevent-scroll" onload="boot()" onresize="resized()" style="height: 100vh; background-image: url('assets/bg2.jpg'); background-repeat: no-repeat; background-size: cover;">
         <div class="container h-100 d-table">
             <div class="row mb-2"></div>
             <div class="row border border-2 border-dark bg-secondary rounded-pill mx-auto p-1">
@@ -82,8 +82,16 @@
     <script src="extensions/winbox.bundle.min.js" async></script>
     <script src="code/winbox.apps.js"></script>
     <script src="code/desktop.logic.js"></script>
-    <script>function boot() {
-        internetApp();
-        getTime(); 
-    }</script>
+    <script>
+        function resized() {
+            if (screen.width <= 700) {
+                document.location = "mobile.html";
+            }
+        }
+        function boot() {
+            resized();
+            internetApp();
+            getTime(); 
+        }
+    </script>
 </html>

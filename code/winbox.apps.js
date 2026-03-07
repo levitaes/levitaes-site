@@ -37,7 +37,7 @@ function internetApp () {
         x: "center",
         y: "center",
         width: "55%",
-        minwidth: "500px",
+        minwidth: "550px",
         minheight: "300px",
         height: document.body.clientWidth/2.5,
         url: "apps/internet.app.html",

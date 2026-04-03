@@ -1,150 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>test</title>
-        <link href="../extensions/bootstrap.css" rel="stylesheet" >
-        <meta charset="UTF-8">
-        <style>
-            a {
-                color: black;
-            }
-            a:hover {color: black}
-            ::-webkit-scrollbar {
-                display: none;
-            }
-            .content {
-                scrollbar-width: 0;
-            }
-            ul li {
-                cursor: pointer;
-                position: relative;
-                padding: 12px 8px 12px 40px;
-                list-style-type: none;
-                background: rgb(249, 245, 241); 
-                font-size: 18px;
-                transition: 0.2s;
-                
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-            }
-            ul li.checked {
-                text-decoration: line-through;
-            }
-            ul li.checked:hover {
-                text-decoration: line-through;
-                color: black;
-            }
-            .close {
-                position: absolute;
-                right: 0;
-                top: 0;
-                padding: 8px 16px 12px 16px;
-            }
-        </style>
-    </head>
-    <body class="bg-light">
-        <div class="container">
-            <div class="row mt-2">
-                <div class="col">
-                    <input id="textInput" id="search" class="bg-primary mt-2 rounded-0 rounded-top form-control" type="text" placeholder="touch grass.." aria-label="ToDo">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <ul id="unorderedList" class="list-group list-group-flush border border-dark border-2 rounded-0 rounded-bottom mt-1 p-0 bg-primary mb-3" style="min-height: 5px;">
-                    </ul>
-                </div>
-            </div>
+<head>
+    <title>Flashcards</title>
+    <link href="../extensions/bootstrap.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <style>
+        a { color: black; }
+        a:hover { color: black; }
+
+        ::-webkit-scrollbar { display: none; }
+        .content { scrollbar-width: 0; }
+
+        ul li {
+            cursor: pointer;
+            position: relative;
+            padding: 12px 8px 12px 40px;
+            list-style-type: none;
+            background: rgb(249, 245, 241);
+            font-size: 18px;
+            transition: 0.2s;
+            user-select: none;
+        }
+
+        .close {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 8px 16px 12px 16px;
+        }
+
+        /* Study mode */
+        #studyView {
+            display: none;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .card-box {
+            background: rgb(249, 245, 241);
+            padding: 40px;
+            font-size: 24px;
+            border: 2px solid black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+<div class="container" id="mainView">
+    <div class="row mt-2">
+        <div class="col-6 pe-1">
+            <input id="frontInput"
+                   class="bg-primary mt-2 rounded-0 rounded-start form-control"
+                   type="text"
+                   placeholder="front">
         </div>
+        <div class="col-6 ps-1">
+            <input id="backInput"
+                   class="bg-primary mt-2 rounded-0 rounded-end form-control"
+                   type="text"
+                   placeholder="back">
+        </div>
+    </div>
 
-        <script>
+    <div class="row mt-2">
+        <div class="col">
+            <button class="bg-primary rounded-0 rounded-top w-100 border-dark mt-2" onclick="startStudy()">Start Study Mode</button>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col">
+            <ul id="unorderedList"
+                class="list-group list-group-flush border border-dark border-2 rounded-0 rounded-bottom mt-1 p-0 bg-primary mb-3"
+                style="min-height: 5px;">
+            </ul>
+        </div>
+    </div>
+</div>
 
-            textInput.addEventListener("keypress", function(event) {  
-                if (event.key === "Enter") {
-                    newElement();
-                }
-            });
-            var nodeList = document.getElementsByTagName("LI");
-            if (localStorage.getItem("todoStr") === null) {
-                localStorage.setItem("todoStr", JSON.stringify(["smile"]));
-                window.location.reload();
-            }
-            else {
-                pullEntries();
-            }
+<!-- Study View -->
+<div class="container" id="studyView">
+    <div class="card-box" id="studyCard" onclick="flipCard()"></div>
 
-            function pullEntries () {
-                let arr = JSON.parse(localStorage.getItem("todoStr"));
-                for (i = 0; i < arr.length; i++) {
-                    newElementFromStorage(arr[i]);
-                }
-            }
+    <div class="mt-3">
+        <button class="bg-primary me-2 rounded-0 rounded-start border-dark" onclick="nextCard()">Next</button>
+        <button class="bg-primary me-2 rounded-0 rounded-end border-dark" onclick="exitStudy()">Exit</button>
+    </div>
+</div>
 
-            var i;
-            for(i = 0; i < nodeList.length; i++) {
-                var span = document.createElement("SPAN");
-                var txt = document.createTextNode("\u00D7");
-                span.className = "close";
-                span.appendChild(txt);
-                nodeList[i].appendChild(span);
-            }
-            var close = document.getElementsByClassName("close");
-            var i;
-            for (i = 0; i < close.length; i++) {
-                close[i].onclick = function() {
-                    var div = this.parentElement;
-                    let arr = JSON.parse(localStorage.getItem("todoStr"));
-                    localStorage.setItem("todoStr", JSON.stringify(arr.filter(e => e !== div.id)));
-                    window.location.reload();
-                }
-            }
+<script>
+let frontInput = document.getElementById("frontInput");
+let backInput = document.getElementById("backInput");
 
-            var list = document.querySelector('ul');
-            list.addEventListener('click', function(ev) {
-                if (ev.target.tagName === 'LI') {
-                    ev.target.classList.toggle('checked');
-                }
-            }, false);
+backInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") newElement();
+});
 
-            function newElement() {
-                var inputValue = document.getElementById("textInput").value;
+if (localStorage.getItem("cards") === null) {
+    localStorage.setItem("cards", JSON.stringify([]));
+}
 
-                var elem = document.getElementById(inputValue);
-                if (elem)
-                    return;
+pullEntries();
 
-                else if (inputValue === '') {
-                    return;
-                } 
-                else {
-                    let arr = JSON.parse(localStorage.getItem("todoStr"));
-                    arr.push(inputValue);
-                    localStorage.setItem("todoStr", JSON.stringify(arr));
-                    pullEntries();
-                    window.location.reload();
+function pullEntries() {
+    let arr = JSON.parse(localStorage.getItem("cards"));
+    document.getElementById("unorderedList").innerHTML = "";
+    arr.forEach(card => newElementFromStorage(card));
+}
 
-                }
-                document.getElementById("textInput").value = "";
-            }
+function newElement() {
+    let front = frontInput.value.trim();
+    let back = backInput.value.trim();
+    if (front === "" || back === "") return;
 
-            function newElementFromStorage(value) {
-                var li = document.createElement("li");
-                li.classList.add("list-group-item", "list-group-item-action", "bg-secondary");
-                var t = document.createTextNode(value);
-                li.appendChild(t);
-                li.setAttribute("id", value);
+    let card = { front, back };
 
-                document.getElementById("unorderedList").appendChild(li);
+    let arr = JSON.parse(localStorage.getItem("cards"));
+    arr.push(card);
+    localStorage.setItem("cards", JSON.stringify(arr));
 
-                var span = document.createElement("SPAN");
-                var txt = document.createTextNode("\u00D7");
-                span.className = "close";
-                span.appendChild(txt);
-                li.appendChild(span);
-            }
-        </script>
-    </body>
+    frontInput.value = "";
+    backInput.value = "";
+
+    pullEntries();
+}
+
+function newElementFromStorage(card) {
+    let li = document.createElement("li");
+    li.classList.add("list-group-item","list-group-item-action","bg-secondary");
+
+    li.textContent = card.front;
+    li.dataset.front = card.front;
+    li.dataset.back = card.back;
+    li.dataset.side = "front";
+
+    let span = document.createElement("SPAN");
+    span.className = "close";
+    span.appendChild(document.createTextNode("\u00D7"));
+
+    span.onclick = function(e) {
+        e.stopPropagation();
+        let arr = JSON.parse(localStorage.getItem("cards"));
+        arr = arr.filter(c => !(c.front === card.front && c.back === card.back));
+        localStorage.setItem("cards", JSON.stringify(arr));
+        pullEntries();
+    };
+
+    li.onclick = function () {
+        if (li.dataset.side === "front") {
+            li.textContent = li.dataset.back;
+            li.dataset.side = "back";
+        } else {
+            li.textContent = li.dataset.front;
+            li.dataset.side = "front";
+        }
+        li.appendChild(span);
+    };
+
+    li.appendChild(span);
+    document.getElementById("unorderedList").appendChild(li);
+}
+
+/* ---- Study Mode ---- */
+let currentCard = null;
+let currentSide = "front";
+
+function startStudy() {
+    let arr = JSON.parse(localStorage.getItem("cards"));
+    if (arr.length === 0) return;
+
+    document.getElementById("mainView").style.display = "none";
+    document.getElementById("studyView").style.display = "block";
+
+    nextCard();
+}
+
+function nextCard() {
+    let arr = JSON.parse(localStorage.getItem("cards"));
+    currentCard = arr[Math.floor(Math.random() * arr.length)];
+    currentSide = "front";
+    document.getElementById("studyCard").textContent = currentCard.front;
+}
+
+function flipCard() {
+    if (!currentCard) return;
+
+    if (currentSide === "front") {
+        document.getElementById("studyCard").textContent = currentCard.back;
+        currentSide = "back";
+    } else {
+        document.getElementById("studyCard").textContent = currentCard.front;
+        currentSide = "front";
+    }
+}
+
+function exitStudy() {
+    document.getElementById("studyView").style.display = "none";
+    document.getElementById("mainView").style.display = "block";
+}
+</script>
+</body>
 </html>

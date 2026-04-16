@@ -89,7 +89,7 @@ function trashApp () {
 
 function todoApp () {
     new WinBox({
-        title: "ToDo",
+        title: "Study",
         icon: "assets/todo.png",
         x: "center",
         y: "center",
